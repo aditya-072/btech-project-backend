@@ -3,6 +3,8 @@ from typing import Annotated
 from fastapi import Body, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from medicine_recommendation.medicine_recommendation import get_medicine_recommendation
+
 from pydantic import BaseModel, Field
 
 # diabetes
@@ -40,6 +42,7 @@ async def heart(data: dict):
     #     Heart_input.i11,
     # ]
     # return predict_heart(arr)
+    # return get_medicine_recommendation()
     return predict_heart(data.data)
     return data
 
