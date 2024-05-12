@@ -1,4 +1,5 @@
 # Fast Api
+import uvicorn
 from typing import Annotated
 from fastapi import Body, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,7 +44,7 @@ async def heart(data: dict):
     # ]
     # return predict_heart(arr)
     # return get_medicine_recommendation()
-    return predict_heart(data.data)
+    return predict_heart(data["data"])
     return data
 
 
@@ -103,3 +104,7 @@ async def parkinsons(data: dict):
 @app.post("/alzheimer")
 async def alzheimer(data: dict):
     return {"Alzheimer not found."}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -7,6 +7,8 @@ import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from medicine_recommendation.medicine_recommendation import get_medicine_recommendation
+
 
 # parkinson's input for model prediction
 class Par_input(BaseModel):
@@ -48,9 +50,17 @@ def predict_parkinsons(input_data: array):
     prediction = loaded_classifier.predict(input_data_reshaped)
     print(prediction)
 
+    ranked_drugs = get_medicine_recommendation("parkinson")
+
+    ranked_drugs_arr = []
+    for index in ranked_drugs["urlDrugName"].keys():
+        print(ranked_drugs["urlDrugName"][index])
+        ranked_drugs_arr.append(ranked_drugs["urlDrugName"][index])
+
     if prediction[0] == 0:
-        print("The person is not diabetic")
-        return {"The person is not diabetic"}
+        print("The person does not have parkinson")
+        return {"status": False, "drugs": ranked_drugs_arr}
+
     else:
-        print("The person is diabetic")
-        return {"The person is diabetic"}
+        print("The person have parkinson")
+        return {"status": True, "drugs": ranked_drugs_arr}
