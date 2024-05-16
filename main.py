@@ -51,7 +51,7 @@ async def heart(data: dict):
 @app.post("/diabetes")
 async def diabetes(data: dict):
     # print(data.data)
-    return predict_diabetes(data.data)
+    return predict_diabetes(data["data"])
     # arr = [
     #     Dia_input.i1,
     #     Dia_input.i2,
@@ -96,8 +96,8 @@ async def parkinsons(data: dict):
     #     Par_input.i22,
     #     Par_input.i21,
     # ]
-    
-    return predict_parkinsons(data.data)
+
+    return predict_parkinsons(data["data"])
     return data
 
 
