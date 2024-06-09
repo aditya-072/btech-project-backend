@@ -2,11 +2,13 @@
 import array
 import pickle
 import numpy as np
+import random
 
 # fast api
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from medicine_recommendation.medicine_rec import recommend
 from medicine_recommendation.medicine_recommendation import get_medicine_recommendation
 
 
@@ -44,10 +46,15 @@ input_data = (5, 166, 72, 19, 175, 25.8, 0.587, 51)
 
 
 def predict_parkinsons(input_data: array):
+
+    input_text = input_data["textArea"]
+    input_data = input_data["arr"]
+
     input_data_as_numpy_array = np.asarray(input_data)
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
 
-    prediction = loaded_classifier.predict(input_data_reshaped)
+    # prediction = loaded_classifier.predict(input_data_reshaped)
+    prediction = [random.randint(0, 1)]
     print(prediction)
 
     ranked_drugs = get_medicine_recommendation("parkinson")
@@ -59,8 +66,16 @@ def predict_parkinsons(input_data: array):
 
     if prediction[0] == 0:
         print("The person does not have parkinson")
-        return {"status": False, "drugs": ranked_drugs_arr}
+        return {
+            "status": False,
+            "drugs": ranked_drugs_arr,
+            "medicine": recommend(input_text, "parkinson"),
+        }
 
     else:
         print("The person have parkinson")
-        return {"status": True, "drugs": ranked_drugs_arr}
+        return {
+            "status": True,
+            "drugs": ranked_drugs_arr,
+            "medicine": recommend(input_text, "parkinson"),
+        }

@@ -7,6 +7,7 @@ import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from medicine_recommendation.medicine_rec import recommend
 from medicine_recommendation.medicine_recommendation import get_medicine_recommendation
 
 
@@ -29,6 +30,10 @@ input_data = (5, 166, 72, 19, 175, 25.8, 0.587, 51)
 
 
 def predict_diabetes(input_data: array):
+
+    input_text = input_data["textArea"]
+    input_data = input_data["arr"]
+
     input_data_as_numpy_array = np.asarray(input_data)
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
 
@@ -48,4 +53,8 @@ def predict_diabetes(input_data: array):
 
     else:
         print("The person is diabetic")
-        return {"status": True, "drugs": ranked_drugs_arr}
+        return {
+            "status": True,
+            "drugs": ranked_drugs_arr,
+            "medicine": recommend(input_text, "diabetes"),
+        }

@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from medicine_recommendation.medicine_recommendation import get_medicine_recommendation
-
+from medicine_recommendation.medicine_rec import recommend
 
 # parkinson's input for model prediction
 class Heart_input(BaseModel):
@@ -33,8 +33,11 @@ with open("heart.pkl", "rb") as file:
 input_data = (5, 166, 72, 19, 175, 25.8, 0.587, 51)
 
 
-def predict_heart(input_data: array = [49, 0, 0, 160, 180, 0, 0, 156, 0, 1, 0]):
+def predict_heart(input_data):
     # input_data = (49,"F","NAP",160,180,0,"Normal",156,"N",1,"Flat",1)
+    input_text = input_data["textArea"]
+    input_data = input_data["arr"]
+
     input_data_as_numpy_array = np.asarray(input_data)
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
     prediction = loaded_classifier.predict(input_data_reshaped)
@@ -53,4 +56,8 @@ def predict_heart(input_data: array = [49, 0, 0, 160, 180, 0, 0, 156, 0, 1, 0]):
 
     else:
         print("The person have heart disease.")
-        return {"status": True, "drugs": ranked_drugs_arr}
+        return {
+            "status": True,
+            "drugs": ranked_drugs_arr,
+            "medicine": recommend(input_text, "heart"),
+        }

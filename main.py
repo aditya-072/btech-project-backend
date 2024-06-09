@@ -29,21 +29,6 @@ app.add_middleware(
 
 @app.post("/heart")
 async def heart(data: dict):
-    # arr = [
-    #     Heart_input.i1,
-    #     Heart_input.i2,
-    #     Heart_input.i3,
-    #     Heart_input.i4,
-    #     Heart_input.i5,
-    #     Heart_input.i6,
-    #     Heart_input.i7,
-    #     Heart_input.i8,
-    #     Heart_input.i9,
-    #     Heart_input.i10,
-    #     Heart_input.i11,
-    # ]
-    # return predict_heart(arr)
-    # return get_medicine_recommendation()
     return predict_heart(data["data"])
     return data
 

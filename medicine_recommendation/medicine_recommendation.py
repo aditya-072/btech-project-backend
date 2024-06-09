@@ -5,7 +5,9 @@ import nltk
 
 
 def getDataSet():
-    return pd.read_csv("medicine_recommendation\datasets\drugLibTrain_raw.tsv", sep="\t")
+    return pd.read_csv(
+        "medicine_recommendation\datasets\drugLibTrain_raw.tsv", sep="\t"
+    )
 
 
 def get_medicine_recommendation(disease: str = "heart"):
